@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Store</title>
+    <link href="./static/css/main.5e36d62c.chunk.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Stats -->
+    <script src="send.js"></script>
+    <script>
+      let perfData = performance.timing;
+
+      let counter = new Counter();
+
+      counter.init(
+        '00a7307d-de23-42c9-a8d5-b93199dcdb3e',
+        String(Math.random()).substr(2, 12),
+        'Store'
+      );
+
+      counter.setAdditionalParams({
+        env: 'production',
+        platform: 'touch',
+      });
+
+      counter.send('connect', perfData.connectEnd - perfData.connectStart);
+
+      counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
+      counter.send('domComplete_', perfData.domComplete);
+      counter.send('domLoading_', perfData.domLoading);
+
+      let timeStart = Date.now();
+
+      // setTimeout(function () {
+      //   document.querySelector('.product-list').classList.add('black');
+
+      //   counter.send('product-list', Date.now() - timeStart);
+      // }, Math.random() * 1000 + 500);
+
+      let uuidv4 = function () {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+          (
+            c ^
+            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+          ).toString(16)
+        );
+      };
+
+      let drawData = function () {
+        let html = '',
+          count = 500,
+          genStart = Date.now();
+
+        for (let i = 0; i < count; i++) {
+          html += `<div class="row">${uuidv4().toUpperCase()}</div>`;
+        }
+
+        counter.send('generate', Date.now() - genStart);
+
+        let drawStart = Date.now();
+
+        document.querySelector('.results').innerHTML = html;
+
+        requestAnimationFrame(function () {
+          counter.send('draw', Date.now() - drawStart);
+        });
+      };
+
+      // document.querySelector('.load').onclick = function () {
+      //   let timeStart = Date.now();
+
+      //   setTimeout(function () {
+      //     counter.send('load', Date.now() - timeStart);
+
+      //     drawData();
+      //   }, Math.random() * 1000 + 2000);
+      // };
+
+      if (window.performance) {
+        let performance = window.performance;
+        let entries = performance.getEntriesByType('paint');
+
+        entries.forEach((entry) => {
+          console.log(entry.name, entry.startTime);
+        });
+      }
+    </script>
+
+    <!-- Content -->
+    <div class="container square" style="margin-bottom: 20px">
+      <a class="container__button button" href="stats.html"
+        >Посмотреть статистику</a
+      >
+      <button class="load">Load</button>
+    </div>
+    <div id="root"></div>
+    <script>
+      !(function (e) {
+        function r(r) {
+          for (
+            var n, l, a = r[0], p = r[1], f = r[2], c = 0, s = [];
+            c < a.length;
+            c++
+          )
+            (l = a[c]),
+              Object.prototype.hasOwnProperty.call(o, l) &&
+                o[l] &&
+                s.push(o[l][0]),
+              (o[l] = 0);
+          for (n in p)
+            Object.prototype.hasOwnProperty.call(p, n) && (e[n] = p[n]);
+          for (i && i(r); s.length; ) s.shift()();
+          return u.push.apply(u, f || []), t();
+        }
+        function t() {
+          for (var e, r = 0; r < u.length; r++) {
+            for (var t = u[r], n = !0, a = 1; a < t.length; a++) {
+              var p = t[a];
+              0 !== o[p] && (n = !1);
+            }
+            n && (u.splice(r--, 1), (e = l((l.s = t[0]))));
+          }
+          return e;
+        }
+        var n = {},
+          o = { 1: 0 },
+          u = [];
+        function l(r) {
+          if (n[r]) return n[r].exports;
+          var t = (n[r] = { i: r, l: !1, exports: {} });
+          return e[r].call(t.exports, t, t.exports, l), (t.l = !0), t.exports;
+        }
+        (l.m = e),
+          (l.c = n),
+          (l.d = function (e, r, t) {
+            l.o(e, r) ||
+              Object.defineProperty(e, r, { enumerable: !0, get: t });
+          }),
+          (l.r = function (e) {
+            'undefined' != typeof Symbol &&
+              Symbol.toStringTag &&
+              Object.defineProperty(e, Symbol.toStringTag, { value: 'Module' }),
+              Object.defineProperty(e, '__esModule', { value: !0 });
+          }),
+          (l.t = function (e, r) {
+            if ((1 & r && (e = l(e)), 8 & r)) return e;
+            if (4 & r && 'object' == typeof e && e && e.__esModule) return e;
+            var t = Object.create(null);
+            if (
+              (l.r(t),
+              Object.defineProperty(t, 'default', { enumerable: !0, value: e }),
+              2 & r && 'string' != typeof e)
+            )
+              for (var n in e)
+                l.d(
+                  t,
+                  n,
+                  function (r) {
+                    return e[r];
+                  }.bind(null, n)
+                );
+            return t;
+          }),
+          (l.n = function (e) {
+            var r =
+              e && e.__esModule
+                ? function () {
+                    return e.default;
+                  }
+                : function () {
+                    return e;
+                  };
+            return l.d(r, 'a', r), r;
+          }),
+          (l.o = function (e, r) {
+            return Object.prototype.hasOwnProperty.call(e, r);
+          }),
+          (l.p = './');
+        var a = (this['webpackJsonpshop-react'] =
+            this['webpackJsonpshop-react'] || []),
+          p = a.push.bind(a);
+        (a.push = r), (a = a.slice());
+        for (var f = 0; f < a.length; f++) r(a[f]);
+        var i = p;
+        t();
+      })([]);
+    </script>
+    <script src="./static/js/2.9468146c.chunk.js"></script>
+    <script src="./static/js/main.7a9bd9cc.chunk.js"></script>
+  </body>
+</html>
