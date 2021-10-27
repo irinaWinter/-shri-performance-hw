@@ -59,7 +59,7 @@ function calcMetricsByDate(data, page, date) {
   table.ttfb = addMetricByDate(data, page, 'ttfb', date);
   // table.load = addMetricByDate(data, page, 'load', date);
   table.productList = addMetricByDate(data, page, 'productList', date);
-  table.pageLoadTime = addMetricByDate(data, page, 'pageLoadTime', date);
+  table.pageLoadTime_ = addMetricByDate(data, page, 'pageLoadTime_', date);
   // table.load = addMetricByDate(data, page, 'load', date);
   // table.generate = addMetricByDate(data, page, 'generate', date);
   // table.draw = addMetricByDate(data, page, 'draw', date);

@@ -29,8 +29,8 @@
 
       counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
       counter.send(
-        'pageLoadTime',
-        perfData.loadEventStart - perfData.loadEventEnd
+        'pageLoadTime_',
+        perfData.loadEventEnd - perfData.navigationStart
       );
       // counter.send('domComplete_', perfData.domComplete);
       // counter.send('domLoading_', perfData.domLoading);
