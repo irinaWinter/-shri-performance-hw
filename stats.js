@@ -55,7 +55,7 @@ function calcMetricsByDate(data, page, date) {
   console.log(`All metrics for ${date}:`);
 
   let table = {};
-  table.connect = addMetricByDate(data, page, 'connect', date);
+  table.connect_ = addMetricByDate(data, page, 'connect_', date);
   table.ttfb = addMetricByDate(data, page, 'ttfb', date);
   table.load = addMetricByDate(data, page, 'load', date);
   table.productList = addMetricByDate(data, page, 'productList', date);

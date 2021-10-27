@@ -25,7 +25,7 @@
         platform: 'touch',
       });
 
-      counter.send('connect', perfData.connectEnd - perfData.connectStart);
+      counter.send('connect_', perfData.connectEnd - perfData.connectStart);
 
       counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
       counter.send('domComplete_', perfData.domComplete);
