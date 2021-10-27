@@ -55,16 +55,17 @@ function calcMetricsByDate(data, page, date) {
   console.log(`All metrics for ${date}:`);
 
   let table = {};
-  table.connect_ = addMetricByDate(data, page, 'connect_', date);
+  // table.connect_ = addMetricByDate(data, page, 'connect_', date);
   table.ttfb = addMetricByDate(data, page, 'ttfb', date);
-  table.load = addMetricByDate(data, page, 'load', date);
+  // table.load = addMetricByDate(data, page, 'load', date);
   table.productList = addMetricByDate(data, page, 'productList', date);
-  table.load = addMetricByDate(data, page, 'load', date);
-  table.generate = addMetricByDate(data, page, 'generate', date);
-  table.draw = addMetricByDate(data, page, 'draw', date);
-  table.domComplete3 = addMetricByDate(data, page, 'domComplete3', date);
-  table.domComplete_ = addMetricByDate(data, page, 'domComplete_', date);
-  table.domLoading_ = addMetricByDate(data, page, 'domLoading_', date);
+  table.pageLoadTime = addMetricByDate(data, page, 'pageLoadTime', date);
+  // table.load = addMetricByDate(data, page, 'load', date);
+  // table.generate = addMetricByDate(data, page, 'generate', date);
+  // table.draw = addMetricByDate(data, page, 'draw', date);
+  // table.domComplete3 = addMetricByDate(data, page, 'domComplete3', date);
+  // table.domComplete_ = addMetricByDate(data, page, 'domComplete_', date);
+  // table.domLoading_ = addMetricByDate(data, page, 'domLoading_', date);
 
   console.table(table);
 }

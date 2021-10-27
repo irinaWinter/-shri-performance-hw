@@ -25,11 +25,15 @@
         platform: 'touch',
       });
 
-      counter.send('connect_', perfData.connectEnd - perfData.connectStart);
+      // counter.send('connect_', perfData.connectEnd - perfData.connectStart);
 
       counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
-      counter.send('domComplete_', perfData.domComplete);
-      counter.send('domLoading_', perfData.domLoading);
+      counter.send(
+        'pageLoadTime',
+        perfData.loadEventStart - perfData.loadEventEnd
+      );
+      // counter.send('domComplete_', perfData.domComplete);
+      // counter.send('domLoading_', perfData.domLoading);
 
       let timeStart = Date.now();
 
@@ -39,34 +43,34 @@
       //   counter.send('product-list', Date.now() - timeStart);
       // }, Math.random() * 1000 + 500);
 
-      let uuidv4 = function () {
-        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-          (
-            c ^
-            (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-          ).toString(16)
-        );
-      };
+      // let uuidv4 = function () {
+      //   return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      //     (
+      //       c ^
+      //       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      //     ).toString(16)
+      //   );
+      // };
 
-      let drawData = function () {
-        let html = '',
-          count = 500,
-          genStart = Date.now();
+      // let drawData = function () {
+      //   let html = '',
+      //     count = 500,
+      //     genStart = Date.now();
 
-        for (let i = 0; i < count; i++) {
-          html += `<div class="row">${uuidv4().toUpperCase()}</div>`;
-        }
+      //   for (let i = 0; i < count; i++) {
+      //     html += `<div class="row">${uuidv4().toUpperCase()}</div>`;
+      //   }
 
-        counter.send('generate', Date.now() - genStart);
+      //   counter.send('generate', Date.now() - genStart);
 
-        let drawStart = Date.now();
+      //   let drawStart = Date.now();
 
-        document.querySelector('.results').innerHTML = html;
+      //   document.querySelector('.results').innerHTML = html;
 
-        requestAnimationFrame(function () {
-          counter.send('draw', Date.now() - drawStart);
-        });
-      };
+      //   requestAnimationFrame(function () {
+      //     counter.send('draw', Date.now() - drawStart);
+      //   });
+      // };
 
       // document.querySelector('.load').onclick = function () {
       //   let timeStart = Date.now();
