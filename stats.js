@@ -98,10 +98,24 @@ function calcMetricsByDate(data, page, date) {
 }
 
 // показывает значение метрики за несколько дней
-function showMetricByPeriod(data, page, name, period) {
-  const caption = `All metrics for period ${period[0]} — ${
-    period[period.length - 1]
-  }`;
+function showMetricByPeriod(data, page, name, start, end, isDiapason = true) {
+  let period = [];
+
+  if (isDiapason) {
+    let startDate = Date.parse(start);
+    let endDate = Date.parse(end);
+
+    for (let i = startDate; i <= endDate; i = i + 24 * 60 * 60 * 1000) {
+      period.push(new Date(i).toISOString().substr(0, 10));
+    }
+  } else {
+    period = [start, end];
+  }
+
+  const caption = isDiapason
+    ? `${name} value for period ${start} — ${end}`
+    : `
+  Comparison of ${name} for days ${start} and ${end}`;
   console.log(caption);
 
   let table = {};
@@ -185,11 +199,9 @@ fetch(
 
     calcMetricsByDate(data, 'Store', '2021-10-28');
 
-    showMetricByPeriod(data, 'Store', 'lsp', [
-      '2021-10-27',
-      '2021-10-28',
-      '2021-10-29',
-    ]);
+    showMetricByPeriod(data, 'Store', 'lsp', '2021-10-27', '2021-10-29');
+
+    showMetricByPeriod(data, 'Store', 'lsp', '2021-10-27', '2021-10-29', false);
 
     showSession(data, '421242041184');
 
