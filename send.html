@@ -20,18 +20,26 @@
         'Store'
       );
 
-      // const platform = !navigator.userAgentData.mobile ? 'desktop' : 'touch';
+      function isMobile() {
+        try {
+          document.createEvent('TouchEvent');
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
 
-      // counter.setAdditionalParams({
-      //   platform: platform,
-      // });
+      const platform = isMobile() ? 'touch' : 'desktop';
+
+      counter.setAdditionalParams({
+        platform: platform,
+      });
 
       counter.send('connect', perfData.connectEnd - perfData.connectStart);
       counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
 
       window.addEventListener('load', function () {
-        navigator.vibrate(200);
-        document.getElementById('mtp').textContent = navigator.userAgent;
+        document.getElementById('mtp').textContent = platform;
 
         // pageLoad
         let now = new Date().getTime();
@@ -83,7 +91,7 @@
       <a class="container__button button" href="stats.html"
         >Посмотреть статистику</a
       >
-      <p id="mtp">Vibrate</p>
+      <p id="mtp">platform</p>
     </div>
     <div id="root"></div>
     <script>
