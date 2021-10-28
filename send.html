@@ -20,7 +20,7 @@
         'Store'
       );
 
-      const platform = navigator.userAgentData.mobile ? 'touch' : 'desktop';
+      const platform = !navigator.userAgentData.mobile ? 'desktop' : 'touch';
 
       counter.setAdditionalParams({
         platform: platform,
