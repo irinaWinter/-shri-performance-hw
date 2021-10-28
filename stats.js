@@ -22,7 +22,9 @@ function prepareData(result) {
 // Посчитать количество хитов для платформы
 function getHitsForPlatform(data, platform) {
   let sampleData = data
-    .filter((item) => item.additional.platform == platform)
+    .filter(
+      (item) => item.additional.platform === platform && item.name === 'connect'
+    )
     .map((item) => item.value);
 
   let result = {};
