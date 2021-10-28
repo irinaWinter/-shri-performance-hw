@@ -23,7 +23,7 @@
       const platform = navigator.userAgentData.mobile ? 'touch' : 'desktop';
 
       counter.setAdditionalParams({
-        platform_: platform,
+        platform: platform,
       });
 
       counter.send('connect', perfData.connectEnd - perfData.connectStart);
