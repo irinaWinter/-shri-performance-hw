@@ -3,84 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Store</title>
+    <title>Магазин</title>
     <link href="./static/css/main.5e36d62c.chunk.css" rel="stylesheet" />
   </head>
   <body>
-    <!-- Stats -->
-    <script src="send.js"></script>
-    <script>
-      let perfData = performance.timing;
-
-      let counter = new Counter();
-
-      counter.init(
-        '00a7307d-de23-42c9-a8d5-b93199dcdb3e',
-        String(Math.random()).substr(2, 12),
-        'Store'
-      );
-
-      const platform = navigator.userAgentData.mobile ? 'touch' : 'desktop';
-
-      counter.setAdditionalParams({
-        platform_: platform,
-      });
-
-      counter.send('connect', perfData.connectEnd - perfData.connectStart);
-      counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
-
-      window.addEventListener('load', function () {
-        // pageLoad
-        let now = new Date().getTime();
-        let loadingTime = now - performance.timing.navigationStart;
-
-        counter.send('pageLoad', loadingTime);
-
-        // productListLoadTime
-        var options = {
-          root: document.querySelector('#root'),
-          rootMargin: '0px',
-          threshold: 0,
-        };
-
-        let productListLoadTimeCount = 0;
-
-        const callback = function (entries, observer) {
-          productListLoadTimeCount = productListLoadTimeCount + 1;
-
-          if (productListLoadTimeCount === 2) {
-            counter.send('productListLoadTime', entries[0].time);
-            observer.disconnect();
-          }
-        };
-
-        const observer = new IntersectionObserver(callback, options);
-        const target = document.querySelector(
-          '.loadingio-spinner-double-ring-cddhxrtz4nj'
-        );
-
-        observer.observe(target);
-      });
-
-      // Largest contentful paint (LCP)
-      let lcpCount = 0;
-
-      new PerformanceObserver((entryList) => {
-        for (const entry of entryList.getEntries()) {
-          lcpCount = lcpCount + 1;
-          if (lcpCount === 2) {
-            counter.send('lsp', entry.startTime);
-          }
-        }
-      }).observe({ type: 'largest-contentful-paint', buffered: true });
-    </script>
-
-    <!-- Content -->
-    <div class="container" style="margin-bottom: 20px">
-      <a class="container__button button" href="stats.html"
-        >Посмотреть статистику</a
-      >
-    </div>
     <div id="root"></div>
     <script>
       !(function (e) {
@@ -174,6 +100,6 @@
       })([]);
     </script>
     <script src="./static/js/2.9468146c.chunk.js"></script>
-    <script src="./static/js/main.6ec6d7d5.chunk.js"></script>
+    <script src="./static/js/main.6dcea13b.chunk.js"></script>
   </body>
 </html>

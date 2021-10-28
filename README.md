@@ -1,3 +1,11 @@
+# Метрики
+
+- connect
+- ttfb
+- pageLoad
+- productListLoadTime
+- lsp
+
 # Счетчик скорости
 
 - Счетчик реализован в файле send.js, его модифицировать не нужно

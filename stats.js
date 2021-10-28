@@ -19,28 +19,52 @@ function prepareData(result) {
   });
 }
 
-// TODO: реализовать
-// показать значение метрики за несколько дней
-function showMetricByPeriod() {}
-
-// показать сессию пользователя
-function showSession() {}
-
-// сравнить метрику в разных срезах
-function compareMetric() {}
-
-// любые другие сценарии, которые считаете полезными
-
-// Пример
-// добавить метрику за выбранный день
-function addMetricByDate(data, page, name, date) {
+// Посчитать количество хитов для платформы
+function getHitsForPlatform(data, platform) {
   let sampleData = data
-    .filter(
-      (item) => item.page == page && item.name == name && item.date == date
-    )
+    .filter((item) => item.additional.platform == platform)
     .map((item) => item.value);
 
   let result = {};
+
+  result.hits = sampleData.length;
+
+  return result;
+}
+
+// Добавить метрику по выбранному критерию
+function addMetric(
+  data,
+  page,
+  name,
+  metrics,
+  metricsValue,
+  showMetricName = false,
+  isAdditional = false
+) {
+  let sampleData = !isAdditional
+    ? data
+        .filter(
+          (item) =>
+            item.page == page &&
+            item.name == name &&
+            item[metrics] == metricsValue
+        )
+        .map((item) => item.value)
+    : data
+        .filter(
+          (item) =>
+            item.page == page &&
+            item.name == name &&
+            item.additional[metrics] == metricsValue
+        )
+        .map((item) => item.value);
+
+  let result = {};
+
+  if (showMetricName) {
+    result.metrics = name;
+  }
 
   result.hits = sampleData.length;
   result.p25 = quantile(sampleData, 0.25);
@@ -50,24 +74,106 @@ function addMetricByDate(data, page, name, date) {
 
   return result;
 }
+
 // рассчитывает все метрики за день
 function calcMetricsByDate(data, page, date) {
-  console.log(`All metrics for ${date}:`);
+  const caption = `All metrics for ${date}`;
+  console.log(caption);
 
   let table = {};
-  // table.connect_ = addMetricByDate(data, page, 'connect_', date);
-  table.ttfb = addMetricByDate(data, page, 'ttfb', date);
-  // table.load = addMetricByDate(data, page, 'load', date);
-  table.productList = addMetricByDate(data, page, 'productList', date);
-  table.pageLoadTime_ = addMetricByDate(data, page, 'pageLoadTime_', date);
-  // table.load = addMetricByDate(data, page, 'load', date);
-  // table.generate = addMetricByDate(data, page, 'generate', date);
-  // table.draw = addMetricByDate(data, page, 'draw', date);
-  // table.domComplete3 = addMetricByDate(data, page, 'domComplete3', date);
-  // table.domComplete_ = addMetricByDate(data, page, 'domComplete_', date);
-  // table.domLoading_ = addMetricByDate(data, page, 'domLoading_', date);
+  table.connect = addMetric(data, page, 'connect', 'date', date);
+  table.ttfb = addMetric(data, page, 'ttfb', 'date', date);
+  table.pageLoad = addMetric(data, page, 'pageLoad', 'date', date);
+  table.productListLoadTime = addMetric(
+    data,
+    page,
+    'productListLoadTime',
+    'date',
+    date
+  );
+  table.lsp = addMetric(data, page, 'lsp', 'date', date);
 
   console.table(table);
+  createTable(table, caption);
+}
+
+// показывает значение метрики за несколько дней
+function showMetricByPeriod(data, page, name, period) {
+  const caption = `All metrics for period ${period[0]} — ${
+    period[period.length - 1]
+  }`;
+  console.log(caption);
+
+  let table = {};
+
+  period.forEach((date) => {
+    table[date] = addMetric(data, page, name, 'date', date, true);
+  });
+
+  console.table(table);
+  createTable(table, caption);
+}
+
+// показать сессию пользователя
+function showSession(data, requestId) {
+  const caption = `All metrics for requestId ${requestId}`;
+  console.log(caption);
+
+  let table = {};
+  let sampleData = {};
+  data
+    .filter((item) => item.requestId == requestId)
+    .forEach((item) => (sampleData[item.name] = item.value));
+
+  table.connect = sampleData.connect;
+  table.ttfb = sampleData.ttfb;
+  table.pageLoad = sampleData.pageLoad;
+  table.productListLoadTime = sampleData.productListLoadTime;
+  table.lsp = sampleData.lsp;
+
+  console.table(table);
+  createTwoCollsTable(table, caption);
+}
+
+// считает посещения на разных платформах
+function getVisitsFromDifferentPlatforms(data) {
+  const caption = `Number of visits from different platforms`;
+  console.log(caption);
+  const platforms = ['desktop', 'touch'];
+
+  let table = {};
+
+  platforms.forEach((platform) => {
+    table[platform] = getHitsForPlatform(data, platform);
+  });
+
+  console.table(table);
+  createTable(table, caption);
+}
+
+// сравнить метрику на разных платформах
+function showMetricByPlatforms(data, page, name) {
+  const caption = `Сomparison of ${name} on different platforms`;
+  console.log(caption);
+
+  const platforms = ['desktop', 'touch'];
+
+  let table = {};
+
+  platforms.forEach((platform) => {
+    table[platform] = addMetric(
+      data,
+      page,
+      name,
+      'platform',
+      platform,
+      true,
+      true
+    );
+  });
+
+  console.table(table);
+  createTable(table, caption);
 }
 
 fetch(
@@ -77,7 +183,17 @@ fetch(
   .then((result) => {
     let data = prepareData(result);
 
-    calcMetricsByDate(data, 'Store', '2021-10-27');
+    calcMetricsByDate(data, 'Store', '2021-10-28');
 
-    // добавить свои сценарии, реализовать функции выше
+    showMetricByPeriod(data, 'Store', 'lsp', [
+      '2021-10-27',
+      '2021-10-28',
+      '2021-10-29',
+    ]);
+
+    showSession(data, '421242041184');
+
+    showMetricByPlatforms(data, 'Store', 'productListLoadTime');
+
+    getVisitsFromDifferentPlatforms(data);
   });
