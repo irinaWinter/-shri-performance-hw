@@ -30,6 +30,7 @@
       counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
 
       window.addEventListener('load', function () {
+        navigator.vibrate(200);
         document.getElementById('mtp').textContent = navigator.userAgent;
 
         // pageLoad
