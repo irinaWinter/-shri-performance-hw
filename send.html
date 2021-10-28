@@ -30,6 +30,8 @@
       counter.send('ttfb', perfData.responseEnd - perfData.requestStart);
 
       window.addEventListener('load', function () {
+        document.getElementById('mtp').textContent = navigator.userAgent;
+
         // pageLoad
         let now = new Date().getTime();
         let loadingTime = now - performance.timing.navigationStart;
@@ -80,6 +82,7 @@
       <a class="container__button button" href="stats.html"
         >Посмотреть статистику</a
       >
+      <p id="mtp">Max touch points</p>
     </div>
     <div id="root"></div>
     <script>
